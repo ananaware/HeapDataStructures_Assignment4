@@ -11,6 +11,7 @@ class Task:
     def __repr__(self):
         return f"Task(ID={self.task_id}, Priority={self.priority})"
 
+
 class PriorityQueue:
     def __init__(self):
         self.heap = []  # list to store heap elements
@@ -26,7 +27,6 @@ class PriorityQueue:
         parent = (index - 1) // 2
 
         while index > 0 and self.heap[index].priority > self.heap[parent].priority:
-            # Swap
             self.heap[index], self.heap[parent] = self.heap[parent], self.heap[index]
             index = parent
             parent = (index - 1) // 2
@@ -72,6 +72,15 @@ class PriorityQueue:
                     self._heapify_up(index)
                 return
 
+    def decrease_key(self, task_id, new_priority):
+        for index, task in enumerate(self.heap):
+            if task.task_id == task_id:
+                if new_priority < task.priority:
+                    task.priority = new_priority
+                    self._heapify_down(index)
+                return
+
+
 if __name__ == "__main__":
 
     pq = PriorityQueue()
@@ -93,4 +102,9 @@ if __name__ == "__main__":
     # Increase priority
     pq.increase_key("T3", 12)
     print("\nHeap after increasing T3 priority to 12:")
+    print(pq.heap)
+
+    # Decrease priority
+    pq.decrease_key("T3", 2)
+    print("\nHeap after decreasing T3 priority to 2:")
     print(pq.heap)
